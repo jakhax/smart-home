@@ -1,2 +1,8 @@
+certifi==2018.4.16
 Django==2.0.7
+django-cors-headers==2.3.0
+djangorestframework==3.8.2
+djangorestframework-jwt==1.11.0
+pkg-resources==0.0.0
+PyJWT==1.6.4
 pytz==2018.5
