@@ -11,7 +11,7 @@ Yet to document
 * [dev sarah](https://github.com/Sarah-Marion)
 * [deryq](https://github.com/muriithiderro)
 * [lucas lambert](https://github.com/lucasLB7)
-* [jakhax]
+* [jakhax](https://github.com/jakhax)
 
 ## Contributing
 
