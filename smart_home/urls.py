@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^',include(('restLogin.urls','restLogin'),namespace="rest-login")),
     url(r'^',include(('rooms.urls','rooms'),namespace="rooms")),
+    url(r'^',include(('raspberry.urls','raspberry'),namespace="raspberry")),
 ]
