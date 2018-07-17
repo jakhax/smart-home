@@ -1,7 +1,7 @@
 from django.db import models
 import json
 from . import utils
-
+from raspberry.models import GPIO_pins
 # Create your models here.
 
 class DeviceTypes(models.Model):
@@ -23,8 +23,8 @@ class Device(models.Model):
     CHOICES=[tuple((i,i)) for i in utils.get_rooms() ]
     device_type=models.ForeignKey(DeviceTypes, on_delete=models.CASCADE,blank=True, null=True)
     room=models.CharField(choices=CHOICES,max_length=255,blank=True)
-    name=models.CharField(max_length=255,unique=True,blank=True)
-    pin_number=models.PositiveIntegerField(blank=True)
+    name=models.CharField(max_length=255,unique=True,blank=True)  
+    pin  = models.ForeignKey(GPIO_pins, on_delete=models.PROTECT,blank=True,null=True)                                                                                                                                                                                
     state=models.BooleanField(default=False)
 
     @classmethod
