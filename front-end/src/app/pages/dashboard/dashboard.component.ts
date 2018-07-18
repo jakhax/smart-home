@@ -1,12 +1,16 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy,OnInit} from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { takeWhile } from 'rxjs/operators/takeWhile' ;
+import {RoomsService} from './services/rooms.service';
+import {DeviceStateService} from "./services/device-state.service";
+
 
 interface CardSettings {
+  id:number;
   title: string;
   iconClass: string;
   type: string;
-  status: boolean,
+  status: boolean;
 }
 
 @Component({
@@ -18,84 +22,80 @@ export class DashboardComponent implements OnDestroy {
 
   private alive = true;
 
-  aboutMe(me){
-    console.log(me)
+  selectControl(control){
+    var devices=this.getAllDevices.devices
+    this.deviceState.changeDeviceState(control.id).then(()=>{
+      control.status=this.deviceState.newState
+      for (var i=0;i<devices.length;i++){
+        if(devices[i].id===control.id){
+          devices[i].state=control.status
+        }
+      }
+      console.log(control)
+    })
+
   }
 
-  lightCard: CardSettings = {
-    title: 'Light A',
-    iconClass: 'nb-power',
-    type: 'warning',
-    status: true,
-  };
-  lightCards: CardSettings = {
-    title: 'Light B',
-    iconClass: 'nb-lightbulb',
-    type: 'primary',
-    status: true,
-  };
- 
-  rollerShadesCard: CardSettings = {
-    title: 'Roller Shades',
-    iconClass: 'nb-roller-shades',
-    type: 'success',
-    status: true,
-  };
-  
-  wirelessAudioCard: CardSettings = {
-    title: 'Wireless Audio',
-    iconClass: 'nb-audio',
-    type: 'info',
-    status: true,
-  };
+  selectRoomD(num){
+    this.addCardDevices(num)
+  }
 
 
   statusCards: string;
+  sCard:any;
+  commonStatusCardsSet: CardSettings[] = [];
 
-  commonStatusCardsSet: CardSettings[] = [
-    this.lightCard,
-    this.lightCards,
-    this.rollerShadesCard,
-    this.wirelessAudioCard,
-  
-  ];
+  // addCardDevices(num){
+  //   this.sCard=[]
+  //   var devices=this.getAllDevices.devices
+  //   var mycards=this.getAllDevices.mycardStyles
+  //   var roomName = this.getAllDevices.roomInfo[num]['name']
+  //   for(var i=0;i<devices.length;i++){
+  //     if(roomName===devices[i].roomName){
+  //       var c={id:devices[i].id,
+  //               title:devices[i].title,
+  //               iconClass:mycards[devices[i].deviceType].icon,
+  //               type:mycards[devices[i].deviceType].style,
+  //               status:devices[i].state
+  //               }
+        
+  //       this.sCard.push(c)
+  //     }
+  //     this.statusCards = this.sCard
+  //   }
+  // }
 
   statusCardsByThemes: {
     default: CardSettings[];
     cosmic: CardSettings[];
-    corporate: CardSettings[];
+    
   } = {
     default: this.commonStatusCardsSet,
     cosmic: this.commonStatusCardsSet,
-    corporate: [
-      {
-        ...this.lightCard,
-        type: 'warning',
-      },
-      {
-        ...this.lightCards,
-        type: 'warning',
-      },
-      {
-        ...this.rollerShadesCard,
-        type: 'primary',
-      },
-      {
-        ...this.wirelessAudioCard,
-        type: 'danger',
-      },
-    ],
   };
 
-  constructor(private themeService: NbThemeService) {
-    this.themeService.getJsTheme()
-      .pipe(takeWhile(() => this.alive))
-      .subscribe(theme => {
-        this.statusCards = this.statusCardsByThemes[theme.name];
-    });
+  constructor(private themeService: NbThemeService,
+    private getAllDevices:RoomsService,
+    private deviceState:DeviceStateService) {
+
   }
 
   ngOnDestroy() {
     this.alive = false;
   }
+  // ngOnInit(){
+  //   this.getAllDevices.getAllDeviceTypes().then(()=>{
+  //     // console.log(this.getAllDevices.deviceTypes);
+  //     // console.log(this.getAllDevices.mycardStyles);
+  //     this.getAllDevices.getAllRoomInfo().then(()=>{
+  //       console.log(this.getAllDevices.roomInfo)
+  //       this.getAllDevices.getAllRoomDevices().then(()=>{
+  //         // console.log(this.getAllDevices.devices);
+  //         this.addCardDevices(2)
+  //         console.log(this.commonStatusCardsSet)
+  //       })
+  //     })
+  //   })
+  // }
+
 }
