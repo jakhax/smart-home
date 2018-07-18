@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnDestroy } from '@angular/core';
+import { Component, HostBinding, OnDestroy,EventEmitter,Output } from '@angular/core';
 import { NbThemeService, NbMediaBreakpoint, NbMediaBreakpointsService } from '@nebular/theme';
 
 
@@ -19,6 +19,8 @@ export class RoomsComponent implements OnDestroy {
   private expanded: boolean;
   private selected: number;
 
+  @Output() selectRoomDash:EventEmitter<any>= new EventEmitter();
+
   breakpoint: NbMediaBreakpoint;
   breakpoints: any;
   themeSubscription: any;
@@ -34,6 +36,9 @@ export class RoomsComponent implements OnDestroy {
   }
 
   select(roomNumber) {
+    console.log(roomNumber)
+    this.selectRoomDash.emit(roomNumber)
+
     if (this.isSelected(roomNumber)) {
       this.expand();
     } else {

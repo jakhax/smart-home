@@ -6,7 +6,7 @@ from  .models import Device,DeviceTypes
 admin.site.register(
     
         Device,
-        list_display=["name","room","pin_number"]
+        list_display=["name","room","state","pin"]
 
 )
 

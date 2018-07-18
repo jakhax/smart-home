@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import {RoomsService} from '../services/rooms.service';
+
 @Component({
   selector: 'ngx-room-selector',
   templateUrl: './room-selector.component.html',
@@ -8,7 +8,7 @@ import {RoomsService} from '../services/rooms.service';
 export class RoomSelectorComponent {
   @Output() select: EventEmitter<number> = new EventEmitter();
 
-  selectedRoom: null;
+  selectedRoom: any;
   sortedRooms = [];
   viewBox = '-20 -20 618.88 407.99';
   isIE = !!(navigator.userAgent.match(/Trident/)
@@ -58,8 +58,9 @@ export class RoomSelectorComponent {
     ],
   };
 
-  constructor(private getroomdetails:RoomsService) {
-    this.selectRoom('2');
+  constructor() {
+    this.sortRooms();
+    this.selectedRoom = 2;
   }
 
   private sortRooms() {
@@ -74,10 +75,7 @@ export class RoomSelectorComponent {
     });
   }
 
-  selectRoom(roomNumber) {
-    this.getroomdetails.getRoomDetails(roomNumber).then(()=>{
-      console.log(this.getroomdetails.res)
-    })
+  selectRoom(roomNumber){
     this.select.emit(roomNumber);
     this.selectedRoom = roomNumber;
     this.sortRooms();

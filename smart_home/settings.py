@@ -108,6 +108,7 @@ JWT_AUTH = {
 # Application definition
 
 INSTALLED_APPS = [
+    'raspberry',
     'smarthome',
     'corsheaders',
     'rest_framework',

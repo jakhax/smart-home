@@ -14,3 +14,9 @@ def get_nb_icons():
     with open('rooms/nb-icons.txt') as ic:
         icons_list=ic.read().split('\n')
     return icons_list
+
+    def __str__(self):
+        return 
+
+    def __unicode__(self):
+        return 
