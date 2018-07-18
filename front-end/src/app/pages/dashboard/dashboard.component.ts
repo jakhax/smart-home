@@ -83,19 +83,19 @@ export class DashboardComponent implements OnDestroy {
   ngOnDestroy() {
     this.alive = false;
   }
-  // ngOnInit(){
-  //   this.getAllDevices.getAllDeviceTypes().then(()=>{
-  //     // console.log(this.getAllDevices.deviceTypes);
-  //     // console.log(this.getAllDevices.mycardStyles);
-  //     this.getAllDevices.getAllRoomInfo().then(()=>{
-  //       console.log(this.getAllDevices.roomInfo)
-  //       this.getAllDevices.getAllRoomDevices().then(()=>{
-  //         // console.log(this.getAllDevices.devices);
-  //         this.addCardDevices(2)
-  //         console.log(this.commonStatusCardsSet)
-  //       })
-  //     })
-  //   })
-  // }
+  ngOnInit(){
+    this.getAllDevices.getAllDeviceTypes().then(()=>{
+      // console.log(this.getAllDevices.deviceTypes);
+      // console.log(this.getAllDevices.mycardStyles);
+      this.getAllDevices.getAllRoomInfo().then(()=>{
+        console.log(this.getAllDevices.roomInfo)
+        this.getAllDevices.getAllRoomDevices().then(()=>{
+          // console.log(this.getAllDevices.devices);
+          this.addCardDevices(2)
+          console.log(this.commonStatusCardsSet)
+        })
+      })
+    })
+  }
 
 }
