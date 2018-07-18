@@ -45,25 +45,25 @@ export class DashboardComponent implements OnDestroy {
   sCard:any;
   commonStatusCardsSet: CardSettings[] = [];
 
-  // addCardDevices(num){
-  //   this.sCard=[]
-  //   var devices=this.getAllDevices.devices
-  //   var mycards=this.getAllDevices.mycardStyles
-  //   var roomName = this.getAllDevices.roomInfo[num]['name']
-  //   for(var i=0;i<devices.length;i++){
-  //     if(roomName===devices[i].roomName){
-  //       var c={id:devices[i].id,
-  //               title:devices[i].title,
-  //               iconClass:mycards[devices[i].deviceType].icon,
-  //               type:mycards[devices[i].deviceType].style,
-  //               status:devices[i].state
-  //               }
+  addCardDevices(num){
+    this.sCard=[]
+    var devices=this.getAllDevices.devices
+    var mycards=this.getAllDevices.mycardStyles
+    var roomName = this.getAllDevices.roomInfo[num]['name']
+    for(var i=0;i<devices.length;i++){
+      if(roomName===devices[i].roomName){
+        var c={id:devices[i].id,
+                title:devices[i].title,
+                iconClass:mycards[devices[i].deviceType].icon,
+                type:mycards[devices[i].deviceType].style,
+                status:devices[i].state
+                }
         
-  //       this.sCard.push(c)
-  //     }
-  //     this.statusCards = this.sCard
-  //   }
-  // }
+        this.sCard.push(c)
+      }
+      this.statusCards = this.sCard
+    }
+  }
 
   statusCardsByThemes: {
     default: CardSettings[];
