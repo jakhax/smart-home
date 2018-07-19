@@ -1,13 +1,6 @@
-/*
-  Web Server
- 
- A simple web server that sends the contents of "hello.txt" on the SD card
- to any web client that connects.
- 
- Modified from the "Ethernet -> WebServer" & "SD -> DumpFile" Arduino examples
- by Angus Gratton <angus@freetronics.com>
- 
- */
+
+//python code to read this data 
+//lambda url: urllib.request.urlopen(url).read().decode("utf-8").split(" ")[0:-1]
 
 #include <SD.h>
 #include <SPI.h>
@@ -26,8 +19,13 @@ const int sd_chipSelect = 4;
 // (port 80 is default for HTTP):
 EthernetServer server(80);
 
-int analogInPin = A0;  // Analog input pin that the potentiometer is attached to
-int sensorValue;
+
+const int analogIn = A0;
+int mVperAmp = 185; // use 100 for 20A Module and 66 for 30A Module
+int RawValue= 0;
+int ACSoffset = 2500; 
+double Voltage = 0;
+double Amps = 0;
 
 void setup() {
  // Open serial communications and wait for port to open:
@@ -51,18 +49,21 @@ void setup() {
 
 void loop() {
 
-  sensorValue = analogRead(analogInPin);
+  RawValue = analogRead(analogIn);
+  Voltage = (RawValue / 1024.0) * 5000; // Gets you mV
+  Amps = ((Voltage - ACSoffset) / mVperAmp);
    
   File dataFile = SD.open("anyFile.txt", FILE_WRITE);
   if (dataFile) {
-    dataFile.println(sensorValue);
+    dataFile.print(Amps);
+    dataFile.print(" ");
     dataFile.close();
-    Serial.println(sensorValue);
+    Serial.println(Amps);
   }
   else {
     Serial.println("error opening datalog.txt");
   }
-  delay(126);
+  delay(2000);
 
   // listen for incoming clients
   EthernetClient client = server.available();
@@ -98,7 +99,7 @@ void loop() {
             dataFile.close();
             client.println();
             Serial.println("Removing example.txt...");
-            SD.remove("example.txt");
+            SD.remove("anyFile.txt");
             }
             // if the file isn't open, pop up an error:
             else {
@@ -118,7 +119,7 @@ void loop() {
       }
     }
     // give the web browser time to receive the data
-    delay(1);
+    delay(200);
     // close the connection:
     client.stop();
     Serial.println("client disonnected");
