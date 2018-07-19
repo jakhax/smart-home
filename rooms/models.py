@@ -24,8 +24,8 @@ class Device(models.Model):
     device_type=models.ForeignKey(DeviceTypes, on_delete=models.CASCADE,blank=True, null=True)
     room=models.CharField(choices=CHOICES,max_length=255,blank=True)
     name=models.CharField(max_length=255,unique=True,blank=True)  
-    pin  = models.ForeignKey(GPIO_pins, on_delete=models.PROTECT,blank=True,null=True)                                                                                                                                                                                
-    state=models.BooleanField(default=False)
+    pin  = models.OneToOneField(GPIO_pins, on_delete=models.PROTECT,blank=True,null=True)                                                                                                                                                                                
+    # state=models.BooleanField(default=False)
 
     @classmethod
     def get_room_by_id(cls,room_id):

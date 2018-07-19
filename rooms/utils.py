@@ -15,8 +15,6 @@ def get_nb_icons():
         icons_list=ic.read().split('\n')
     return icons_list
 
-    def __str__(self):
-        return 
-
-    def __unicode__(self):
-        return 
+def serialize_devices(devices):
+    fdata=[{"id":i.id,"device_type":i.device_type.id,"room":i.room,"name":i.name,"state":i.pin.default_state} for i in devices]
+    return json.dumps(fdata)

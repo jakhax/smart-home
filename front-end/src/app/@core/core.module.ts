@@ -7,6 +7,7 @@ import { of as observableOf } from 'rxjs';
 import { throwIfAlreadyLoaded } from './module-import-guard';
 import { DataModule } from './data/data.module';
 import { AnalyticsService } from './utils/analytics.service';
+import {environment} from '../../environments/environment';
 
 const socialLinks = [
   {
@@ -35,13 +36,13 @@ export const NB_CORE_PROVIDERS = [
           key: 'token',
         },
 
-        baseEndpoint: 'http://localhost:8000',
+        baseEndpoint: environment.apiEndPoint,
         login: {
-          endpoint: '/api-login-user',
+          endpoint: 'api-login-user',
           method: 'post',
         },
         register: {
-          endpoint: '/api-register-user',
+          endpoint: 'api-register-user',
           method: 'post',
         },
         logout: {

@@ -28,6 +28,9 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+#is_pi 
+IS_PI=config("IS_PI",default=False,cast=bool)
+
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 MODE=config("MODE", default="dev")
 

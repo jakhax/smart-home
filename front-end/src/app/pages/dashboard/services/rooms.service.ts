@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Device} from '../data/device';
 import {DeviceType} from '../data/device-type';
 import {Rooms} from '../data/rooms';
+import {environment} from "../../../../environments/environment";
 
 
 
@@ -13,10 +14,10 @@ import {Rooms} from '../data/rooms';
 })
 export class RoomsService {
 
-  url:string="http://localhost:8000/api-get-room"
-  allRoomDevicesUrl="http://localhost:8000/api-get-all-rooms"
-  allDeviceTypesUrl="http://localhost:8000/api-get-all-device-types"
-  allRoomData="http://localhost:8000/api-get-room-data"
+  url:string=environment.apiEndPoint+"api-get-room"
+  allRoomDevicesUrl=environment.apiEndPoint+"api-get-rooms-devices"
+  allDeviceTypesUrl=environment.apiEndPoint+"api-get-all-device-types"
+  allRoomData=environment.apiEndPoint+"api-get-room-data"
 
   res:any
   devices:any=[]
@@ -61,7 +62,7 @@ export class RoomsService {
 
   addRoomDevices(r){
     for(var i=0;i<r.length;i++){
-      this.devices.push(new Device(r[i].fields["name"],r[i].pk,r[i].fields["room"],r[i].fields["device_type"],r[i].fields["state"]))
+      this.devices.push(new Device(r[i]["name"],r[i]["id"],r[i]["room"],r[i]["device_type"],r[i]["state"]))
     }
   }  
 
