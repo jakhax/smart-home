@@ -15,7 +15,7 @@ import {environment} from "../../../../environments/environment";
 export class RoomsService {
 
   url:string=environment.apiEndPoint+"api-get-room"
-  allRoomDevicesUrl=environment.apiEndPoint+"api-get-all-rooms"
+  allRoomDevicesUrl=environment.apiEndPoint+"api-get-rooms-devices"
   allDeviceTypesUrl=environment.apiEndPoint+"api-get-all-device-types"
   allRoomData=environment.apiEndPoint+"api-get-room-data"
 
@@ -62,7 +62,7 @@ export class RoomsService {
 
   addRoomDevices(r){
     for(var i=0;i<r.length;i++){
-      this.devices.push(new Device(r[i].fields["name"],r[i].pk,r[i].fields["room"],r[i].fields["device_type"],r[i].fields["state"]))
+      this.devices.push(new Device(r[i]["name"],r[i]["id"],r[i]["room"],r[i]["device_type"],r[i]["state"]))
     }
   }  
 
