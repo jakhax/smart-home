@@ -8,3 +8,5 @@ def api_change_device_state(request,device_id):
     device.state=not device.state
     device.save()
     return HttpResponse(json.dumps({"state":device.state}),content_type="json")
+
+
