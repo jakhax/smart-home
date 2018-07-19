@@ -5,13 +5,6 @@ from django.http import HttpResponse
 import json
 from raspberry.models import GPIO_pins
 
-<<<<<<< HEAD
-def api_change_device_state(request,device_id):
-    device=Device.objects.get(pk=int(device_id))
-    device.state=not device.state
-    device.save()
-    return HttpResponse(json.dumps({"state":device.state}),content_type="json")
-=======
 #board setup
 if settings.IS_PI:
     from raspberry.board import Raspberry
@@ -52,4 +45,3 @@ def api_change_device_state(request,device_id):
     if raspberry.toggle_pin(gpio_pin.pk):
         state=raspberry.get_pin_state(gpio_pin.pk)
     return HttpResponse(json.dumps({"state":state}),content_type="json")
->>>>>>> d928ec6375ab98927cec9fc9fe4775a61d36714e
