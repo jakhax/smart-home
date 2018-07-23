@@ -53,3 +53,41 @@ class TestCustomResponsePayload(BaseTestCase):
     def tearDown(self):
         views.jwt_response_payload_handler = self.original_handler
 
+
+
+class ObtainJSONWebTokenTests(BaseTestCase):
+    def test_jwt_login_json(self):
+        """
+        Ensure JWT login view using JSON POST works.
+        """
+        client = APIClient(enforce_csrf_checks=True)
+        response = client.post('/auth-token/', format='json')
+
+        self.assertTrue(response.status_code, status.HTTP_200_OK)
+
+
+    
+    def test_jwt_login_json_bad_creds(self):
+        """
+        Ensure JWT login view using JSON POST fails
+        if bad credentials are used.
+        """
+        client = APIClient(enforce_csrf_checks=True)
+
+        self.data['password'] = 'wrong'
+        response = client.post('/auth-token/', format='json')
+
+        self.assertTrue(response.status_code, 400)
+
+
+
+    def test_jwt_login_json_missing_fields(self):
+        """
+        Ensure JWT login view using JSON POST fails if missing fields.
+        """
+        client = APIClient(enforce_csrf_checks=True)
+
+        response = client.post('/auth-token/',
+                               {'username': self.username}, format='json')
+
+        self.assertTrue(response.status_code, 400)
