@@ -11,9 +11,6 @@ import {environment} from '../../environments/environment';
 
 const socialLinks = [
   {
-    url: 'https://github.com/jakhax/smart-home.git',
-    target: '_blank',
-    icon: 'socicon-github',
   },
 ];
 
@@ -41,22 +38,22 @@ export const NB_CORE_PROVIDERS = [
           endpoint: 'api-login-user',
           method: 'post',
         },
-        register: {
-          endpoint: 'api-register-user',
-          method: 'post',
-        },
-        logout: {
-          endpoint: '/auth/sign-out',
-          method: 'post',
-        },
-        requestPass: {
-          endpoint: '/auth/request-pass',
-          method: 'post',
-        },
-        resetPass: {
-          endpoint: '/auth/reset-pass',
-          method: 'post',
-        },
+        // register: {
+        //   endpoint: 'api-register-user',
+        //   method: 'post',
+        // },
+        // logout: {
+        //   endpoint: '/auth/sign-out',
+        //   method: 'post',
+        // },
+        // requestPass: {
+        //   endpoint: '/auth/request-pass',
+        //   method: 'post',
+        // },
+        // resetPass: {
+        //   endpoint: '/auth/reset-pass',
+        //   method: 'post',
+        // },
 
       }),
     ],

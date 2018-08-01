@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import {environment} from '../../../environments/environment';
+import {HttpClient} from '@angular/common/http';
 
 export class Track {
   name: string;
@@ -10,26 +12,43 @@ export class Track {
 @Injectable()
 export class PlayerService {
   current: number;
+  songUrl: string=environment.apiEndPoint+"api-get-music"
+  songs:any
+  constructor(private http:HttpClient) { }
   playlist: Track[] = [
-    {
-      name: 'Don\'t Wanna Fight',
-      artist: 'Alabama Shakes',
-      url: 'https://p.scdn.co/mp3-preview/6156cdbca425a894972c02fca9d76c0b70e001af',
-      cover: 'assets/images/cover1.jpg',
-    },
-    {
-      name: 'Harder',
-      artist: 'Daft Punk',
-      url: 'https://p.scdn.co/mp3-preview/92a04c7c0e96bf93a1b1b1cae7dfff1921969a7b',
-      cover: 'assets/images/cover2.jpg',
-    },
-    {
-      name: 'Come Together',
-      artist: 'Beatles',
-      url: 'https://p.scdn.co/mp3-preview/83090a4db6899eaca689ae35f69126dbe65d94c9',
-      cover: 'assets/images/cover3.jpg',
-    },
+ 
   ];
+  
+
+  addSongsTrack(r){
+    for(var i=0; i<r.length; i++){
+      this.playlist.push(    {
+        name: r[i]['name'],
+        artist: 'Alabama Shakes',
+        url: environment.apiEndPoint+r[i]['url'],
+        cover: 'assets/images/cover1.jpg',
+      })
+      
+  }
+  }
+
+  getSongs(){
+    let promise=new Promise((resolve,reject)=>{
+ 
+      this.http.get(this.songUrl).toPromise().then(myResponse=>{
+        this.songs=myResponse
+        this.addSongsTrack(this.songs)
+        resolve()
+      },
+      error=>{
+        console.log(error)
+        reject()
+    })
+    })
+    return promise   
+  }
+
+
 
   random(): Track {
     this.current = Math.floor(Math.random() * this.playlist.length);
@@ -64,3 +83,4 @@ export class PlayerService {
     return this.playlist[this.current];
   }
 }
+
