@@ -44,23 +44,27 @@ export class RoomsService {
   }
 
   addRoomInfo(a){
+    this.roomInfo=[]
     for(var i=0; i<a.length; i++){
       this.roomInfo[a[i]['id']]=new Rooms(a[i]['id'],a[i]['name'])
     }
   }
 
   addStyeTypes(a){
+    this.mycardStyles=[]
     for(var i=0; i<a.length; i++){
       this.mycardStyles[a[i].pk]=new DeviceType(a[i].pk,a[i].fields["name"],a[i].fields["iconclass"],a[i].fields["style_type"])
     }}
 
   addDeviceTypes(a){
+    this.deviceTypes=[]
     for(var i=0; i<a.length; i++){
       this.deviceTypes.push(new DeviceType(a[i].pk,a[i].fields["name"],a[i].fields["iconclass"],a[i].fields["style_type"]))
       }
   }
 
   addRoomDevices(r){
+    this.devices=[]
     for(var i=0;i<r.length;i++){
       this.devices.push(new Device(r[i]["name"],r[i]["id"],r[i]["room"],r[i]["device_type"],r[i]["state"]))
     }

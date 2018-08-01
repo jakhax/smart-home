@@ -1,6 +1,7 @@
 @import '../../@theme/styles/themes';
 @import '~bootstrap/scss/mixins/breakpoints';
 @import '~@nebular/theme/styles/global/bootstrap/breakpoints';
+@import '~@nebular/theme/components/card/card.component.theme';
 
 @include nb-install-component() {
   .solar-card nb-card-header {
@@ -18,5 +19,11 @@
     /deep/ nb-card.large-card {
       height: nb-theme(card-height-medium);
     }
+  }
+  .header {
+    @include nb-card-header();
+    font-size: 24px;
+    border-bottom: none;
+    padding-bottom: 0;
   }
 }

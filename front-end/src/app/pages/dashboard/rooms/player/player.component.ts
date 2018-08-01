@@ -16,8 +16,12 @@ export class PlayerComponent implements OnDestroy {
   shuffle: boolean;
 
   constructor(private playerService: PlayerService) {
-    this.track = this.playerService.random();
-    this.createPlayer();
+    this.playerService.getSongs().then(()=>{
+      this.track = this.playerService.random();
+      this.createPlayer();
+    })
+    
+    
   }
 
   ngOnDestroy() {

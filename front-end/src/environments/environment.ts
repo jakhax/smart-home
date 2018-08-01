@@ -10,5 +10,6 @@
 
 export const environment = {
   production: false,
-  apiEndPoint: "http://localhost:8000/",
+  apiEndPoint: "http://127.0.0.1:8000/",
+  weatherApiKey: "65301a782b86d2b5fd6728dfc6e3a809",
 };

@@ -1,4 +1,5 @@
 import { NbMenuItem } from '@nebular/theme';
+import {environment} from '../../environments/environment';
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
@@ -16,17 +17,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/auth/login',
       },
       {
-        title: 'Register',
-        link: '/auth/register',
-      },
-      {
-        title: 'Request Password',
-        link: '/auth/request-password',
-      },
-      {
-        title: 'Reset Password',
-        link: '/auth/reset-password',
-      },
+        title: 'Admin',
+        link: '/auth/admin',
+      }
     ],
   },
 ];

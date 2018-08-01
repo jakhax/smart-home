@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
 
       if (token.isValid()) {
         this.user = token.getPayload(); // here we receive a payload from the token and assigne it to our `user` variable 
-        console.log(this.user)
+        console.log(token)
       }
 
     });
