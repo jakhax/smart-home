@@ -9,6 +9,7 @@ de_modules
 .vscode/
 
 venv/
+virtual/
 
 # IDEs and editors
 /.idea
