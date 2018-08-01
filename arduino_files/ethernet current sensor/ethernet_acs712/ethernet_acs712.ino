@@ -11,8 +11,14 @@
 byte mac[] = { 
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(10,42, 0, 2);
-
+//sd card pin 
 const int sd_chipSelect = 4;
+//current measurement vars
+double cCount;
+double cValue;
+double avgCurrent;
+double nCurrent;
+uint32_t t1 = millis();
 
 // Initialize the Ethernet server library
 // with the IP address and port you want to use 
@@ -43,30 +49,60 @@ void setup() {
     // don't do anything more, infinite loop here until we get reset
     while(1) { }
   }
-  Serial.println("SD card initialized.");
+  Serial.println("SD card initialized."); 
 }
 
 
 void loop() {
+  int rVal = 0;
+  int sampleDuration = 100;       // 100ms
+  int sampleCount = 0;
+  unsigned long rSquaredSum = 0;
+  int rZero = 511;                // For illustrative purposes only - should be measured to calibrate sensor.
 
-  RawValue = analogRead(analogIn);
-  Voltage = (RawValue / 1024.0) * 5000; // Gets you mV
-  Amps = ((Voltage - ACSoffset) / mVperAmp);
+  uint32_t startTime = millis();  // take samples for 100ms
+  while((millis()-startTime) < sampleDuration)
+  {
+    rVal = analogRead(A0) - rZero;
+    rSquaredSum += rVal * rVal;
+    sampleCount++;
+  }
+
+  double voltRMS = 5.0 * sqrt(rSquaredSum / sampleCount) / 1024.0;
+
+  // x 1000 to convert volts to millivolts
+  // divide by the number of millivolts per amp to determine amps measured
+  // the 20A module 100 mv/A (so in this case ampsRMS = 10 * voltRMS
+  double ampsRMS = voltRMS * 10.0;
+//  Serial.println(ampsRMS);
+  
+  cCount=cCount+1.0;
+  nCurrent= ampsRMS;
+  cValue= cValue + nCurrent;
+  if(millis()-t1>=3000){
+    avgCurrent=cValue/cCount;
+    Serial.println(cValue);
+    Serial.println("Average current");
+    Serial.println(avgCurrent);
+
+    File dataFile = SD.open("anyFile.txt", FILE_WRITE);
+    if (dataFile) {
+      dataFile.print(avgCurrent);
+      dataFile.print(" ");
+      dataFile.close();
+      Serial.println(Amps);
+    }
+    else {
+      Serial.println("error opening datalog.txt");
+    }
+    cCount=0;
+    cValue=0;
+    t1 = millis();
+  }
    
-  File dataFile = SD.open("anyFile.txt", FILE_WRITE);
-  if (dataFile) {
-    dataFile.print(Amps);
-    dataFile.print(" ");
-    dataFile.close();
-    Serial.println(Amps);
-  }
-  else {
-    Serial.println("error opening datalog.txt");
-  }
-  delay(2000);
-
   // listen for incoming clients
   EthernetClient client = server.available();
+
   if (client) {
     Serial.println("new client");
     // an http request ends with a blank line
@@ -124,4 +160,5 @@ void loop() {
     client.stop();
     Serial.println("client disonnected");
   }
+  
 }
