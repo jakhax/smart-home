@@ -5,7 +5,7 @@ class Raspberry:
         GPIO.setmode(GPIO.BCM)
         self.pins=GPIO_pins.objects.all()
         self.modes={"OUT":GPIO.OUT,"IN":GPIO.IN}
-        self.states={True:GPIO.HIGH,False:GPIO.LOW}
+        self.states={False:GPIO.HIGH,True:GPIO.LOW}
         for x in self.pins:
             #setup all pins
             GPIO.setup(x.pin,self.modes[x.gpio_state])

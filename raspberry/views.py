@@ -28,7 +28,6 @@ else:
                     selected_pin.default_state=pin_state
                     selected_pin.save()
                     self.update_pins()
-                    print("path")
                     return True
                 except Exception as e:
                     print(e)
@@ -40,6 +39,8 @@ raspberry=Raspberry()
 
 
 def api_change_device_state(request,device_id):
+    #lets update pins first incase its a new pin
+    raspberry.update_pins()
     device=Device.objects.get(pk=int(device_id))
     gpio_pin=device.pin
     if raspberry.toggle_pin(gpio_pin.pk):
