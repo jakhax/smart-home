@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from .models import Device,DeviceTypes
+from .models import Device,DeviceTypes,Music
 from django.core.serializers import serialize
 from django.http import HttpResponse
 from .utils import get_home_data,serialize_devices
 import json
+from decouple import config
+from  forecastiopy import *
 
 def get_room_by_id(request,room_id):
     devices=Device.get_devices_by_id(int(room_id))
@@ -33,4 +35,23 @@ def api_get_rooms_data(request):
     return HttpResponse(rooms,content_type="json")
     
 
+def get_all_music(request):
+    songs=Music.objects.all()
+    songs=[{"name":i.name,"url":i.music.url[1:]} for i in songs]
+    data=json.dumps(songs)
+    return HttpResponse(data,content_type="json")
 
+	
+def get_daily_data(request):
+    town = [-1.3,36.82]
+    api_key=config('API_KEY')
+    fio = ForecastIO.ForecastIO(api_key, latitude=town[0], longitude=town[1])
+    current = FIOCurrently.FIOCurrently(fio)
+    data = {'humidity': current.humidity,'temperature': current.temperature,'pressure':current.pressure,'cloudCover':current.cloudCover,'windSpeed':current.windSpeed}
+
+    return HttpResponse(json.dumps(data),content_type="json")
+
+
+    # , 'cloudCover', 'currently', 'dewPoint', 'get', 'humidity', 
+    # 'icon', 'ozone', 'precipIntensity', 'precipProbability', , 
+    # 'summary', 'temperature', 'time', 'uvIndex', 'visibility', 'windBearing', 'windGust', 'windSpeed']

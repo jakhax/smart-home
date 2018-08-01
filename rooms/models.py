@@ -45,4 +45,12 @@ class Device(models.Model):
         verbose_name_plural="Devices"
     
 
+class Music(models.Model):
+    name=models.CharField(max_length=255,unique=True,blank=True) 
+    music= models.FileField(upload_to = u'mp3/', max_length=200)
 
+    def __str__(self):
+        return "{}".format(self.name)
+    
+    class Meta:
+        verbose_name_plural="Music"
