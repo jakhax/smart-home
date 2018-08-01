@@ -111,6 +111,8 @@ JWT_AUTH = {
 # Application definition
 
 INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
     'raspberry',
     'smarthome',
     'corsheaders',
