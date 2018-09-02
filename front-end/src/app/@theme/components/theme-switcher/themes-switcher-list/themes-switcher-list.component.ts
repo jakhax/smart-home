@@ -25,10 +25,6 @@ export class ThemeSwitcherListComponent {
 
   themes = [
     {
-      title: 'Corporate',
-      key: 'corporate',
-    },
-    {
       title: 'Light',
       key: 'default',
     },
@@ -36,7 +32,10 @@ export class ThemeSwitcherListComponent {
       title: 'Cosmic',
       key: 'cosmic',
     },
-  
+    {
+      title: 'Corporate',
+      key: 'corporate',
+    },
   ];
 
   constructor(

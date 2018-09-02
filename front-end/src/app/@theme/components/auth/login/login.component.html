@@ -1,0 +1,83 @@
+<nb-auth-block>
+  <h2 class="title">Sign In</h2>
+  <small class="form-text sub-title">Hello! Sign in with your username</small>
+
+  <form (ngSubmit)="login()" #form="ngForm" autocomplete="nope">
+
+    <nb-alert *ngIf="showMessages.error && errors?.length && !submitted" outline="danger">
+      <div><strong>Oh snap!</strong></div>
+      <div *ngFor="let error of errors">{{ error }}</div>
+    </nb-alert>
+
+    <nb-alert *ngIf="showMessages.success && messages?.length && !submitted" outline="success">
+      <div><strong>Hooray!</strong></div>
+      <div *ngFor="let message of messages">{{ message }}</div>
+    </nb-alert>
+
+    <div class="form-group">
+        <label for="input-username" class="sr-only">Username</label>
+        <input nbInput
+               [(ngModel)]="user.username"
+               #username="ngModel"
+               name="username"
+               id="input-username"
+               placeholder="username"
+               autofocus
+               fullWidth
+               [status]="username.dirty ? (username.invalid  ? 'danger' : 'success') : ''"
+               [required]="getConfigValue('forms.validation.username.required')"
+               [minlength]="getConfigValue('forms.validation.username.minLength')"
+               [maxlength]="getConfigValue('forms.validation.username.maxLength')">
+        <small class="form-text error" *ngIf="username.invalid && username.touched && username.errors?.required">
+          Username is required!
+        </small>
+        <small
+          class="form-text error"
+          *ngIf="username.invalid && username.touched && (username.errors?.minlength || username.errors?.maxlength)">
+          Username should contain
+          {{ getConfigValue('forms.validation.username.minLength') }}
+          characters, e.g johndoe
+        </small>
+      </div>
+
+    <div class="form-group">
+      <label for="input-password" class="sr-only">Password</label>
+      <input nbInput
+             [(ngModel)]="user.password"
+             #password="ngModel"
+             name="password"
+             type="password"
+             id="input-password"
+             placeholder="Password"
+             fullWidth
+             [status]="password.dirty ? (password.invalid  ? 'danger' : 'success') : ''"
+             [required]="getConfigValue('forms.validation.password.required')"
+             [minlength]="getConfigValue('forms.validation.password.minLength')"
+             [maxlength]="getConfigValue('forms.validation.password.maxLength')">
+      <small class="form-text error" *ngIf="password.invalid && password.touched && password.errors?.required">
+        Password is required!
+      </small>
+      <small
+        class="form-text error"
+        *ngIf="password.invalid && password.touched && (password.errors?.minlength || password.errors?.maxlength)">
+        Password should contains
+        from {{ getConfigValue('forms.validation.password.minLength') }}
+        to {{ getConfigValue('forms.validation.password.maxLength') }}
+        characters
+      </small>
+    </div>
+
+    <div class="form-group accept-group col-sm-12">
+      <nb-checkbox name="rememberMe" [(ngModel)]="user.rememberMe" *ngIf="rememberMe">Remember me</nb-checkbox>
+      <a class="forgot-password" routerLink="../request-password">Forgot Password?</a>
+    </div>
+
+    <button nbButton
+            status="success"
+            fullWidth
+            [disabled]="submitted || !form.valid"
+            [class.btn-pulse]="submitted">
+      Sign In
+    </button>
+  </form>
+</nb-auth-block>

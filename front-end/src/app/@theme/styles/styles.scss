@@ -25,7 +25,7 @@
 
   // fixed in rc.9 and can be removed after upgrade
   .custom-control .custom-control-indicator {
-    border-radius: 50%; // TODO: quickfix for https://github.com/smart-home/nebular/issues/275
+    border-radius: 50%; 
   }
   @include bootstrap-rtl();
 };

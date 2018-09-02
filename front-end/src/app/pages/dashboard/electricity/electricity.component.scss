@@ -6,16 +6,15 @@
 @import '~@nebular/theme/styles/global/bootstrap/hero-buttons';
 
 @include nb-install-component() {
-
   nb-card {
     display: flex;
     flex-direction: row;
+    width: 20rem;
   }
 
   nb-card-body {
     overflow: hidden;
   }
-
   .consumption-table {
     display: flex;
     flex-direction: column;
@@ -43,7 +42,6 @@
 
   nb-tabset /deep/ {
     flex: 1;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
 

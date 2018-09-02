@@ -1,12 +1,10 @@
 import { NbMenuItem } from '@nebular/theme';
-import {environment} from '../../environments/environment';
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    title: 'Dashboard',
+    title: 'IoT Dashboard',
     icon: 'nb-home',
-    link: '/pages/dashboard',
-    home: true,
+    link: '/pages/iot-dashboard',
   },
   {
     title: 'Auth',
@@ -17,9 +15,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/auth/login',
       },
       {
-        title: 'Admin',
-        link: '/auth/admin',
-      }
+        title: 'Reset Password',
+        link: '/auth/reset-password',
+      },
     ],
   },
 ];

@@ -1,4 +1,4 @@
-<nb-card size="large">
+<nb-card size="small">
   <div class="consumption-table">
     <div class="table-header">
       <div>Electricity</div>
@@ -18,41 +18,5 @@
         </div>
       </nb-tab>
     </nb-tabset>
-  </div>
-
-  <div class="chart-container">
-    <div class="chart-header">
-      <div class="header-stats">
-        <div class="stats-block">
-          <div class="subtitle">Consumed</div>
-          <div>
-            <span class="value">816</span>
-            <span class="unit">kWh</span>
-          </div>
-        </div>
-
-        <div class="stats-block currency">
-          <div class="subtitle">Spent</div>
-          <div>
-            <span class="value">291</span>
-            <span class="unit">USD</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="dropdown"
-           [ngClass]="{ 'ghost-dropdown': currentTheme === 'corporate' }"
-           ngbDropdown>
-        <button type="button" ngbDropdownToggle class="btn"
-                [ngClass]="{ 'btn-outline-success': currentTheme == 'default', 'btn-primary': currentTheme != 'default'}">
-          {{ type }}
-        </button>
-        <ul class="dropdown-menu" ngbDropdownMenu>
-          <li class="dropdown-item" *ngFor="let t of types" (click)="type = t">{{ t }}</li>
-        </ul>
-      </div>
-
-    </div>
-    <ngx-electricity-chart></ngx-electricity-chart>
   </div>
 </nb-card>

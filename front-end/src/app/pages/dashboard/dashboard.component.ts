@@ -1,9 +1,8 @@
 import {Component, OnDestroy,OnInit} from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { takeWhile } from 'rxjs/operators/takeWhile' ;
-import {RoomsService} from './services/rooms.service';
+import {SmartHomeService} from './services/smart-home.service';
 import {DeviceStateService} from "./services/device-state.service";
-
 
 interface CardSettings {
   id:number;
@@ -23,7 +22,7 @@ export class DashboardComponent implements OnDestroy {
   private alive = true;
 
   selectControl(control){
-    var devices=this.getAllDevices.devices
+    var devices=this.smartHomeService.smartHomeInfo.devices
     this.deviceState.changeDeviceState(control.id).then(()=>{
       control.status=this.deviceState.newState
       for (var i=0;i<devices.length;i++){
@@ -35,30 +34,25 @@ export class DashboardComponent implements OnDestroy {
     })
 
   }
-
   selectRoomD(num){
     this.addCardDevices(num)
   }
-
-
   statusCards: string;
   sCard:any;
   commonStatusCardsSet: CardSettings[] = [];
 
   addCardDevices(num){
     this.sCard=[]
-    var devices=this.getAllDevices.devices
-    var mycards=this.getAllDevices.mycardStyles
-    var roomName = this.getAllDevices.roomInfo[num]['name']
+    var devices=this.smartHomeService.smartHomeInfo.devices
+    var roomName = this.smartHomeService.smartHomeInfo.rooms[num].name
     for(var i=0;i<devices.length;i++){
-      if(roomName===devices[i].roomName){
+      if(roomName===devices[i].room){
         var c={id:devices[i].id,
-                title:devices[i].title,
-                iconClass:mycards[devices[i].deviceType].icon,
-                type:mycards[devices[i].deviceType].style,
+                title:devices[i].name,
+                iconClass:devices[i].device_type.iconclass,
+                type:devices[i].device_type.style_type,
                 status:devices[i].state
                 }
-        
         this.sCard.push(c)
       }
       this.statusCards = this.sCard
@@ -75,27 +69,23 @@ export class DashboardComponent implements OnDestroy {
   };
 
   constructor(private themeService: NbThemeService,
-    private getAllDevices:RoomsService,
+    private smartHomeService:SmartHomeService,
     private deviceState:DeviceStateService) {
 
   }
-
+  loadSmartHomeInfo(){
+    this.smartHomeService.getSmartHomeInfo().then(()=>{
+      if(this.smartHomeService.smartHomeInfo.devices.length>0){
+        this.addCardDevices(this.smartHomeService.smartHomeInfo.devices[0].id)
+      }
+    }).catch(error =>{
+      console.log(error)
+    })
+  }
   ngOnDestroy() {
     this.alive = false;
   }
   ngOnInit(){
-    this.getAllDevices.getAllDeviceTypes().then(()=>{
-      // console.log(this.getAllDevices.deviceTypes);
-      // console.log(this.getAllDevices.mycardStyles);
-      this.getAllDevices.getAllRoomInfo().then(()=>{
-        console.log(this.getAllDevices.roomInfo)
-        this.getAllDevices.getAllRoomDevices().then(()=>{
-          // console.log(this.getAllDevices.devices);
-          this.addCardDevices(2)
-          console.log(this.commonStatusCardsSet)
-        })
-      })
-    })
+    this.loadSmartHomeInfo()
   }
-
 }

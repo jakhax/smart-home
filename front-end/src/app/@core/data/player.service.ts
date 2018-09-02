@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient,HttpHeaders} from '@angular/common/http'
+import { NbAuthService } from '@nebular/auth';
 
 export class Track {
   name: string;
@@ -11,10 +12,17 @@ export class Track {
 
 @Injectable()
 export class PlayerService {
+
+  private _headers = new HttpHeaders();
+  private authToken:string;
+
   current: number;
   songUrl: string=environment.apiEndPoint+"api-get-music"
   songs:any
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,private authService:NbAuthService) { 
+    this.authToken=this.authService.getToken()["value"]["token"]
+  }
+
   playlist: Track[] = [
  
   ];
@@ -33,9 +41,10 @@ export class PlayerService {
   }
 
   getSongs(){
+    const headers = this._headers.append('Authorization','Bearer '+this.authToken);
     let promise=new Promise((resolve,reject)=>{
  
-      this.http.get(this.songUrl).toPromise().then(myResponse=>{
+      this.http.get(this.songUrl,{headers:headers}).toPromise().then(myResponse=>{
         this.songs=myResponse
         this.addSongsTrack(this.songs)
         resolve()
