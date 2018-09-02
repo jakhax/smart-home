@@ -1,68 +1,69 @@
-from django.shortcuts import render, HttpResponse
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-from rest_framework import viewsets
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.authtoken.models import Token
-from rest_framework import status
-from rest_framework.generics import CreateAPIView
-from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
+from rest_framework.permissions import IsAuthenticated
 import jwt
-import json
-
-from .serializers import UserSerializer
 from smart_home.settings import SECRET_KEY
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 
-# class CreateUserView(CreateAPIView):
-#     serializer_class = UserSerializer
-
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         if serializer.is_valid(raise_exception=True):
-#             self.perform_create(serializer)
-#             headers = self.get_success_headers(serializer.data)
-#             user = self.model.get(username=serializer.data['username'])
-#             payload = jwt_payload_handler(user)
-#             token = jwt_encode_handler(payload)
-#             return Response(
-#                 token,
-#                 status=status.HTTP_201_CREATED,
-#                 headers=headers
-#             )
-#         else:
-#             return Response(
-#                 status=status.HTTP_400_BAD_REQUEST
-#             )
-
 
 class LoginUserView(APIView):
-
     def post(self, request, *args, **kwargs):
-        username = request.data.get('email')
+        # @test: curl -X POST -H "Content-Type: application/json" \
+        # -d '{"username":"username","password":"pass"}' http://localhost:8000/api-login-user/
+        username = request.data.get('username')
         password = request.data.get('password')
-        print(request.data)
-
-        user = authenticate(username=username, password=password)
-        if user:
-            payload = jwt_payload_handler(user)
+        self.request_validation = self.validate_user(request)
+        if self.request_validation:
+            payload= jwt_payload_handler(self.user)
             token = {
                 'token': jwt.encode(payload, SECRET_KEY),
                 'status': 'success'
-                }    
-            print('washere')
+                }  
             return Response(token)
-        else:
-            return Response(
-              {'error': 'Invalid credentials',
-              'status': 'failed'},
-            )
+        return Response({'error': 'Invalid credentials'}, status=401)
 
+    def validate_user(self,r):
+        self.username = r.data.get("username")
+        self.password = r.data.get("password")
+        try:
+            self.user= authenticate(username=self.username,password=self.password)
+            if self.user:
+                return True
+        except:
+            return False
+
+class PasswordReset(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request, *args, **kwargs):
+        self.u=User.objects.get(pk=request.user.pk)
+        self.post_data=request.data
+        if self.change_password():
+            return Response({'success': 'success'})
+        return Response({'error': 'Bad request'}, status=400)
+
+    def change_password(self):
+        try:
+            if len(self.post_data.get("password")) > 0 and self.post_data.get("password")==self.post_data.get("confirmPassword"):
+                self.password=self.post_data.get("password")
+                self.u.set_password(self.password)
+                self.u.save()
+                return True
+            return False
+        except Exception as err:
+            print(err)
+            return False
+
+
+def print_headers(request):
+    import re
+    regex = re.compile('^HTTP_')
+    headers=dict((regex.sub('', header), value) for (header, value) 
+        in request.META.items() if header.startswith('HTTP_'))
+    print(headers)

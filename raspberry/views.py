@@ -1,15 +1,18 @@
 from django.shortcuts import render
 from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rooms.models import Device
-from django.http import HttpResponse
-import json
+
 from raspberry.models import GPIO_pins
 
 #board setup
 if settings.IS_PI:
     from raspberry.board import Raspberry
-
 else:
+    # test board without raspberry
     class Raspberry:
         def __init__(self):
             self.pins=GPIO_pins.objects.all()
@@ -38,6 +41,8 @@ else:
 raspberry=Raspberry()
 
 
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
 def api_change_device_state(request,device_id):
     #lets update pins first incase its a new pin
     raspberry.update_pins()
@@ -45,4 +50,4 @@ def api_change_device_state(request,device_id):
     gpio_pin=device.pin
     if raspberry.toggle_pin(gpio_pin.pk):
         state=raspberry.get_pin_state(gpio_pin.pk)
-    return HttpResponse(json.dumps({"state":state}),content_type="json")
+    return Response({"state":state})

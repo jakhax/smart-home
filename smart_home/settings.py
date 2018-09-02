@@ -79,6 +79,7 @@ REST_FRAMEWORK = {
     ),
 }
 
+# @todo change in production
 CORS_ORIGIN_ALLOW_ALL=True
 CORS_ALLOW_METHODS = (
     'GET',
@@ -104,8 +105,8 @@ JWT_AUTH = {
     'rest_framework_jwt.utils.jwt_response_payload_handler',
 
     'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
-  
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=config('JWT_EXPIRATION_DAYS', default=3, cast=int)),
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 }
 
 # Application definition
@@ -113,8 +114,6 @@ JWT_AUTH = {
 INSTALLED_APPS = [
     'jet.dashboard',
     'jet',
-    'raspberry',
-    'smarthome',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
@@ -124,6 +123,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'raspberry',
     'rooms'
 ]
 
