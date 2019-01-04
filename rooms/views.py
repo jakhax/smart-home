@@ -1,11 +1,13 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import Music
+from rest_framework.views import APIView
+from .models import Device,DeviceTypes,Music
+from django.core.serializers import serialize
 from .utils import get_home_data
 from .serializers import serialize_devices
 from decouple import config
-from  forecastiopy import ForecastIO,FIOCurrently
+from  forecastiopy import *
 
 
 @api_view(['GET'])
