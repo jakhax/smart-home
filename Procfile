@@ -1,0 +1,1 @@
+web: gunicorn smart_home.wsgi --log-file -
