@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 import jwt
 from smart_home.settings import SECRET_KEY
 
@@ -14,6 +14,7 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
 
 class LoginUserView(APIView):
+    permission_classes = (AllowAny,)
     def post(self, request, *args, **kwargs):
         # @test: curl -X POST -H "Content-Type: application/json" \
         # -d '{"username":"username","password":"pass"}' http://localhost:8000/api-login-user/
