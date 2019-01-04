@@ -3,13 +3,21 @@ import {HttpClient,HttpHeaders} from '@angular/common/http'
 import { NbAuthService } from '@nebular/auth';
 import {environment} from "../../../environments/environment";
 
+export interface Weather{
+  windSpeed : number;
+  temperature: number;
+  humidity: number;
+  pressure: number;
+  cloudCover:number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
   private _headers = new HttpHeaders();
   private authToken:string;
-  res;
+  res:Weather;
 
   url:string = environment.apiEndPoint +'api-get-daily-data'
 
@@ -20,9 +28,8 @@ export class WeatherService {
   getWeatherDetails(){
     const headers = this._headers.append('Authorization','Bearer '+this.authToken);
     let promise=new Promise((resolve,reject)=>{
-      this.http.get(this.url,{headers:headers}).toPromise().then(myResponse=>{
+      this.http.get<Weather>(this.url,{headers:headers}).toPromise().then(myResponse=>{
         this.res=myResponse
-        console.log(this.res)
         resolve()
       },
     error=>{

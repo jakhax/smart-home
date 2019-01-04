@@ -1,12 +1,14 @@
 import { Component,OnInit } from '@angular/core';
-import { WeatherService } from '../../../@core/data/weather.service'
+import { WeatherService,Weather } from '../../../@core/data/weather.service'
 @Component({
   selector: 'ngx-weather',
   styleUrls: ['./weather.component.scss'],
   templateUrl: './weather.component.html',
 })
+
+
 export class WeatherComponent {
-  data ={}
+  data:Weather
   todayDate= new Date()
   constructor(private myservice:WeatherService){
      
