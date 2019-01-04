@@ -32,7 +32,7 @@ def get_all_music(request):
 @permission_classes((IsAuthenticated, ))
 def get_daily_data(request):
     town = [-1.3,36.82]
-    api_key=config('API_KEY')
+    api_key=config('WEATHER_API_KEY')
     fio = ForecastIO.ForecastIO(api_key, latitude=town[0], longitude=town[1])
     current = FIOCurrently.FIOCurrently(fio)
     data = {'humidity': current.humidity,'temperature': current.temperature,

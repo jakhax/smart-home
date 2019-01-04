@@ -28,86 +28,16 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-#is_pi 
-IS_PI=config("IS_PI",default=False,cast=bool)
-
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
-MODE=config("MODE", default="dev")
 
-if MODE=="dev":
-    # development
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': config('DB_HOST'),
-            'PORT': '',
-        }
-        
-    }
-    SECURE_SSL_REDIRECT=False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-else:
-    # production
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=config('DATABASE_URL')
-        )
-    }
-    SECURE_SSL_REDIRECT=config('SECURE_SSL_REDIRECT', cast=bool)
-    SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', cast=bool)
-    CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', cast=bool)
-    
-
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+}
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
-
-
-#REST AND CORS
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
-}
-
-# @todo change in production
-CORS_ORIGIN_ALLOW_ALL=True
-CORS_ALLOW_METHODS = (
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-)
-JWT_AUTH = {
-    'JWT_ENCODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_encode_handler',
-
-    'JWT_DECODE_HANDLER':
-    'rest_framework_jwt.utils.jwt_decode_handler',
-
-    'JWT_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_payload_handler',
-
-    'JWT_PAYLOAD_GET_USER_ID_HANDLER':
-    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
-
-    'JWT_RESPONSE_PAYLOAD_HANDLER':
-    'rest_framework_jwt.utils.jwt_response_payload_handler',
-
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=config('JWT_EXPIRATION_DAYS', default=3, cast=int)),
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-}
 
 # Application definition
 
@@ -127,6 +57,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -198,8 +129,61 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#REST AND CORS
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    )
+}
+
+CORS_ORIGIN_WHITELIST = config('CORS_ORIGIN_WHITELIST', cast=Csv())
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = (
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+JWT_AUTH = {
+    'JWT_ENCODE_HANDLER':
+    'rest_framework_jwt.utils.jwt_encode_handler',
+
+    'JWT_DECODE_HANDLER':
+    'rest_framework_jwt.utils.jwt_decode_handler',
+
+    'JWT_PAYLOAD_HANDLER':
+    'rest_framework_jwt.utils.jwt_payload_handler',
+
+    'JWT_PAYLOAD_GET_USER_ID_HANDLER':
+    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+    'rest_framework_jwt.utils.jwt_response_payload_handler',
+
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=config('JWT_EXPIRATION_DAYS', default=3, cast=int)),
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}
+
+SECURE_SSL_REDIRECT=config('SECURE_SSL_REDIRECT', cast=bool)
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', cast=bool)
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', cast=bool)
+
+#is_pi 
+IS_PI=config("IS_PI",default=False,cast=bool)
