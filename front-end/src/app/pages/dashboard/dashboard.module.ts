@@ -11,6 +11,7 @@ import { SecurityCamerasComponent } from './security-cameras/security-cameras.co
 import { ElectricityComponent } from './electricity/electricity.component';
 import { WeatherComponent } from './weather/weather.component';
 import { PlayerComponent } from './rooms/player/player.component';
+import {TemperatureComponent} from './temperature/temperature.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { PlayerComponent } from './rooms/player/player.component';
     ElectricityComponent,
     WeatherComponent,
     PlayerComponent,
+    TemperatureComponent,
   
   ],
 })
