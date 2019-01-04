@@ -112,8 +112,6 @@ JWT_AUTH = {
 # Application definition
 
 INSTALLED_APPS = [
-    'jet.dashboard',
-    'jet',
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
