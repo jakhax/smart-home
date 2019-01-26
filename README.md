@@ -102,6 +102,16 @@ python manage.py test
 1. Adding GPIO pins, devices and device types to the Database via django admin.
 2. Suggestions on physical connections and builds.
 
+## Live demo
+### Front-end
+- [https://jakhax.github.io/smart-home/](https://jakhax.github.io/smart-home/)
+- Use this creds to login
+    * username:`testuser`
+    * password: `*EUGt55YEXdF`
+
+### django-admin
+- You really dont think am going give you creds this !!, but am pretty sure there is a bug somewhere so feel free to hack through and be nice :)
+
 ## Contributing
 
 - Git clone [https://github.com/jakhax/smart-home.git](https://github.com/jakhax/smart-home.git) 
