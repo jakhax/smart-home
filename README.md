@@ -107,7 +107,7 @@ python manage.py test
 - [https://jakhax.github.io/smart-home/](https://jakhax.github.io/smart-home/)
 - Use this creds to login
     * username:`testuser`
-    * password: `*EUGt55YEXdF`
+    * password: `testuser`
 
 ### django-admin
 - You really dont think am going give you creds this !!, but am pretty sure there is a bug somewhere so feel free to hack through and be nice :)

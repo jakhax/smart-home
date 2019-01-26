@@ -43,6 +43,8 @@ class LoginUserView(APIView):
 class PasswordReset(APIView):
     permission_classes = (IsAuthenticated,)
     def post(self, request, *args, **kwargs):
+        if request.user.username=="testuser":
+            return Response({'error': 'Bad request'}, status=400)
         self.u=User.objects.get(pk=request.user.pk)
         self.post_data=request.data
         if self.change_password():
