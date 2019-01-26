@@ -2,7 +2,7 @@ Smart Home
 ===================
 ## Description
 [Smart Home](https://github.com/jakhax/smart-home.git) 
-This is a raspberry pi based smart-home that can be used to control devices and get data from sensors e.g light bulbs, fans, air conditioner, humidity & temp sensors, home media system.
+This is a raspberry pi based smart-home that can be used get data from sensors & control devices e.g light bulbs, fans, air conditioner, humidity & temp sensors, home media system.
 
 The main aim of the project was to create a smart home system thats lets you to easily add more devices to your home without having to rewrite your code or change your circuit design.
 
@@ -53,7 +53,7 @@ pip3 install -r requirements
 ```
 
 #### Prepare environmet variables
-For this project you will need the following configurations plus email setup for email registration hmac verification.
+For this project you will need the following configurations.
 ```bash
 DEBUG=True
 SECRET_KEY=SECRET_KEY
