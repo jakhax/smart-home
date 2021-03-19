@@ -4,7 +4,7 @@ cookies==2.2.1
 dj-database-url==0.5.0
 django>=2.0.10
 django-cors-headers==2.3.0
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 djangorestframework-jwt==1.11.0
 forecastiopy==0.22
 gunicorn==19.9.0
